@@ -149,16 +149,17 @@ const generateTopic = () => {
         <input v-model.number="max" type="number" class="border p-2 rounded" />
       </div>
     </div>
-    <div>Participant 1: {{ participant1 }}</div>
-    <div>Participant 2: {{ participant2 }}</div>
-    <div>Category: {{ team_topic }}</div>
+    <div>Участник 1: {{ participant1 }}</div>
+    <div>Участник 2: {{ participant2 }}</div>
+    <div>Категория: {{ team_title }}</div>
 
     <button :disabled="!students_class.trim()" @click="generate" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
-      Generate Random Number
+      Избери мъченици
     </button>
     </div>
-    <div v-else>
-      Thank you for playing the game
+    <div class="motivation" v-else>
+      Нека силата бъде с Вас!
+      <img alt="Vue logo" class="yoda" src="./assets/fantasy-troll-beautiful-environment.jpg" width="300" height="300" />
     </div>
 
     <div class="teams-wrapper">
@@ -258,6 +259,16 @@ main {
   h3 {
     max-width: 300px;
   }
+}
+
+.motivation {
+  font-size: 50px;
+  text-transform: uppercase;
+}
+
+.yoda {
+  display: block;
+  margin: 0 auto;
 }
 
 </style>
