@@ -153,7 +153,7 @@ const generateTopic = () => {
     <div>Участник 2: {{ participant2 }}</div>
     <div>Категория: {{ team_title }}</div>
 
-    <button :disabled="!students_class.trim()" @click="generate" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+    <button :disabled="!students_class.trim()" @click="generate" class="special-btn mt-4 px-4 py-2 bg-blue-500 text-white rounded">
       Избери мъченици
     </button>
     </div>
@@ -269,6 +269,14 @@ main {
 .yoda {
   display: block;
   margin: 0 auto;
+}
+
+.special-btn {
+  font-size: 20px;
+  padding: 20px;
+  background: #be5683;
+  color: #fff;
+  border: none;
 }
 
 </style>
