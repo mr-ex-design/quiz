@@ -12,7 +12,7 @@ const teams = ref([]);
 const participant1_name = ref('')
 const participant2_name = ref('')
 const usedNumbers = ref(new Set());
-const level = ref('1')
+const level = ref('3')
 const team_topic = ref('')
 const team_title = ref('')
 const topic_requirements = ref('')
@@ -27,20 +27,20 @@ const generate = () => {
   }
 
   // Do some kinky shit here.
-  // if(students_class.value.length > 0 &&
-  //     students_class.value === '8b' &&
-  //     (participantOne == 9 || participantTwo == 9 || participantOne == 19 || participantTwo == 19)
-  // ) {
-  //   // Remove the numbers which were chosen at random.
-  //   usedNumbers.value.delete(participantOne)
-  //   usedNumbers.value.delete(participantTwo)
-  //
-  //   participantOne = 19
-  //   participantTwo = 9
-  //
-  //   usedNumbers.value.add(participantOne);
-  //   usedNumbers.value.add(participantTwo);
-  // }
+  if(students_class.value.length > 0 &&
+      students_class.value === '8b' &&
+      (participantOne == 9 || participantTwo == 9 || participantOne == 19 || participantTwo == 19)
+  ) {
+    // Remove the numbers which were chosen at random.
+    usedNumbers.value.delete(participantOne)
+    usedNumbers.value.delete(participantTwo)
+
+    participantOne = 19
+    participantTwo = 9
+
+    usedNumbers.value.add(participantOne);
+    usedNumbers.value.add(participantTwo);
+  }
 
   // Add the participants for the show.
   participant1.value = participantOne
@@ -106,7 +106,7 @@ const generateTopic = () => {
   let topics_list = projects[random_project - 1]['topics'];
   let random_topic;
 
-  if(topics_list !== 'undefined' && topics_list.length > 0) {
+  if(level.value !== '3' && topics_list !== 'undefined' && topics_list.length > 0) {
     random_topic = Math.floor(Math.random() * (topics_list.length - 1 + 1) + 1);
     team_topic.value = topics_list[random_topic]
   }
@@ -136,7 +136,7 @@ const generateTopic = () => {
 
       <div>
         <label class="block mb-1">Level:</label>
-        <select v-model="level">
+        <select :disabled="true" v-model="level">
           <option disabled value="">Please select one</option>
           <option>1</option>
           <option>2</option>
@@ -149,6 +149,7 @@ const generateTopic = () => {
         <input v-model.number="max" type="number" class="border p-2 rounded" />
       </div>
     </div>
+
     <div>Участник 1: {{ participant1 }}</div>
     <div>Участник 2: {{ participant2 }}</div>
     <div>Категория: {{ team_title }}</div>
@@ -158,8 +159,14 @@ const generateTopic = () => {
     </button>
     </div>
     <div class="motivation" v-else>
-      Нека силата бъде с Вас!
-      <img alt="Vue logo" class="yoda" src="./assets/fantasy-troll-beautiful-environment.jpg" width="300" height="300" />
+      <span v-if="level !== '3'">
+        Нека силата бъде с Вас!
+      </span>
+      <span v-else>
+        Нека кодът бъде с Вас!
+      </span>
+      <img v-if="level !== '3'" alt="Vue logo" class="yoda" src="./assets/fantasy-troll-beautiful-environment.jpg" width="300" height="300" />
+      <img v-else alt="Vue logo" class="yoda" src="./assets/boom.jpg" width="600" height="300" />
     </div>
 
     <div class="teams-wrapper">
@@ -220,6 +227,7 @@ main {
   .member {
     border: 1px solid #fff;
     padding: 10px;
+    width: 350px;
 
     h2 {
       font-weight: bold;
