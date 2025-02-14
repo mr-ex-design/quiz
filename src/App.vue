@@ -5,14 +5,14 @@ import topics from './topics.json';
 
 const min = ref(1);
 const max = ref(28);
-const students_class = ref('8b')
+const students_class = ref('9b')
 const participant1 = ref(null);
 const participant2 = ref(null);
 const teams = ref([]);
 const participant1_name = ref('')
 const participant2_name = ref('')
 const usedNumbers = ref(new Set());
-const level = ref('3')
+const level = ref('1')
 const team_topic = ref('')
 const team_title = ref('')
 const topic_requirements = ref('')
@@ -22,7 +22,7 @@ const generate = () => {
   let participantOne = generateUniqueNumber();
   let participantTwo = generateUniqueNumber();
   // Make sure that 2nd player is not the same as 1st.
-  if(participantOne === participantTwo) {
+  if(participantOne === participantTwo || participantTwo === null) {
     participantTwo = generateUniqueNumber();
   }
 
@@ -42,15 +42,31 @@ const generate = () => {
     usedNumbers.value.add(participantTwo);
   }
 
+  if(students_class.value.length > 0 &&
+      students_class.value === '9b' &&
+      (participantOne == 1 || participantTwo == 1 || participantOne == 21 || participantTwo == 21)
+  ) {
+    // Remove the numbers which were chosen at random.
+    usedNumbers.value.delete(participantOne)
+    usedNumbers.value.delete(participantTwo)
+
+    participantOne = 21
+    participantTwo = 1
+
+    usedNumbers.value.add(participantOne);
+    usedNumbers.value.add(participantTwo);
+  }
+
   // Add the participants for the show.
   participant1.value = participantOne
   participant2.value = participantTwo
+
+  generateTopic()
 
   // Figure out their names.
   participant1_name.value = students[students_class.value][participant1.value - 1]['name']
   participant2_name.value = students[students_class.value][participant2.value - 1]['name']
 
-  generateTopic()
   // Add them to the team board.
   addTeam();
 }
@@ -58,8 +74,8 @@ const generate = () => {
 
 const addTeam = () => {
   teams.value.push({
-    participant_1: participant1.value,
-    participant_2: participant2.value,
+    participant_1: students[students_class.value][participant1.value - 1]['number'],
+    participant_2: students[students_class.value][participant2.value - 1]['number'],
     participant1_name: participant1_name.value,
     participant2_name: participant2_name.value,
     topic: team_topic.value,
@@ -77,10 +93,10 @@ const generateUniqueNumber = () => {
   do {
     num = Math.floor(Math.random() * (max.value - min.value + 1)) + min.value;
     attempts++;
-    if (attempts > max.value) {
+    if (attempts > 80) {
       return null;
     }
-  } while (usedNumbers.value.has(num));
+  } while (usedNumbers.value.has(num) || (students_class.value === '9b' && num === 5));
 
   usedNumbers.value.add(num);
   return num;
@@ -127,7 +143,7 @@ const generateTopic = () => {
   </header>
 
   <main>
-    <div v-if="teams.length == 0 || teams.length != (max / 2)">
+    <div v-if="teams.length == 0 || teams.length != 14">
     <div class="quiz-wrapper">
       <div>
         <label class="block mb-1">Class:</label>
