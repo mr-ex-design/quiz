@@ -96,7 +96,7 @@ const generateUniqueNumber = () => {
     if (attempts > 80) {
       return null;
     }
-  } while (usedNumbers.value.has(num) || (students_class.value === '9b' && num === 5));
+  } while (usedNumbers.value.has(num));
 
   usedNumbers.value.add(num);
   return num;
